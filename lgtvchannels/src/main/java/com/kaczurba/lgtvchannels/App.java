@@ -202,7 +202,6 @@ public class App {
 		//Document doc = Saving.readAndRemoveItemTags(doc);
 		
 		lgtvXml.writeXml(Paths.get( "NoChannels3.xml" ));
-		
 		System.out.println("save received - saving to a file...");
 	}*/
 	
