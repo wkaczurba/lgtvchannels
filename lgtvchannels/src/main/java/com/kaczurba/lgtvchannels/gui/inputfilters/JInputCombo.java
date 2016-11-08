@@ -3,13 +3,17 @@ package com.kaczurba.lgtvchannels.gui.inputfilters;
 import javax.swing.JPanel;
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
 
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import java.awt.Component;
 
 public class JInputCombo<E> extends JPanel implements ActionListener, DocumentListener {
 	/**
@@ -26,8 +30,16 @@ public class JInputCombo<E> extends JPanel implements ActionListener, DocumentLi
 	public JInputCombo() {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
+		JLabel label = new JLabel("Search:");
+		label.setHorizontalAlignment(SwingConstants.LEFT);
+		add(label);
+		
+		// TODO: Set alignment of this stuff.
+		
 		
 		textField = new JTextField();
+		textField.setAlignmentX(Component.LEFT_ALIGNMENT);
+		textField.setHorizontalAlignment(SwingConstants.LEFT);
 		add(textField);
 		textField.setColumns(10);
 		textField.setActionCommand("textField");
@@ -82,6 +94,7 @@ public class JInputCombo<E> extends JPanel implements ActionListener, DocumentLi
 			remove(this.comboBoxes);
 		
 		this.comboBoxes = comboBoxes;
+		comboBoxes.setAlignmentX(Component.LEFT_ALIGNMENT);
 		this.add(comboBoxes);
 		comboBoxes.setActionListener(this);
 	}
