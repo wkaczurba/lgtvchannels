@@ -6,27 +6,19 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import java.awt.GridBagLayout;
-import javax.swing.JTextField;
-import java.awt.GridBagConstraints;
-import javax.swing.JLabel;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import javax.swing.JComboBox;
 
 public class JComboBoxesDemo extends JPanel {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5052357058546252462L;
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -40,7 +32,7 @@ public class JComboBoxesDemo extends JPanel {
 					contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 					frame.setContentPane(contentPane);
 					
-					JComboBoxes filters = new JComboBoxes();
+					JComboBoxes<String> filters = new JComboBoxes<>();
 					
 					DataModel<String> dataModel = new DataModel<>();
 					dataModel.add("isSkipped", new LinkedHashSet<String>( Arrays.asList("0", "1")));
@@ -58,12 +50,13 @@ public class JComboBoxesDemo extends JPanel {
 						Object obj = e.getSource();
 						
 						if (obj instanceof JComboBox) {
-							JComboBox combo = (JComboBox) obj;
+							JComboBox<?> combo = (JComboBox<?>) obj;
 							System.out.println("MAIN: " + combo.getName() + " has changed to: " + combo.getSelectedItem());
 						}						
 					});
 					contentPane.add(filters, BorderLayout.CENTER);
 
+					// ** THIS SHOULD CASE ILLEGAL STATE EXCEPTION **					
 					dataModel.add("isFive", new LinkedHashSet<String>( Arrays.asList("0", "1")));
 
 				} catch (Exception e) {

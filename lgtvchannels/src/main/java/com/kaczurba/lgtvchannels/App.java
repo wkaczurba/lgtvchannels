@@ -23,18 +23,14 @@ import com.kaczurba.lgtvchannels.xmls.LGTVXml;
 public class App {
 	final List<Item> leftList = new ArrayList<>();
 	final List<Item> rightList = new ArrayList<>();
-//	final FrameOne frame = new FrameOne();
 	final MainFrame frame = new MainFrame();
 	
 	private final LGTVXml lgtvXml;
-	//LGTVXml lgtvXml; // = new LGTVXml(doc);
 	
 	FrameHandler frameHandler = new FrameHandler() {
 		
-
 		@Override
 		public void moveRight(ActionEvent e, List<Item> selectedItems) {
-			// TODO Auto-generated method stub
 			System.out.println("moveRight received; selected: " + selectedItems);
 			leftList.removeAll(selectedItems);
 			for (Item item : selectedItems) {
@@ -45,7 +41,6 @@ public class App {
 
 		@Override
 		public void moveLeft(ActionEvent e, List<Item> what) {
-			// TODO: Make it remember original positions of stuff.
 			System.out.println("moveLeft received; selected: " + what);
 			
 			rightList.removeAll(what);
@@ -95,25 +90,23 @@ public class App {
 
 		@Override
 		public void undo(ActionEvent e) {
-			// TODO Auto-generated method stub
+			// TODO Handle UNDO.
 			System.out.println("undo received");
 		}
 
 		@Override
 		public void saveWIP(ActionEvent e) {
 			// TODO: Saving to a file.
-			lgtvXml.removeAllItemTags();
+			lgtvXml.removeAllItemTagsAsNodes();
 			lgtvXml.newAddChannels2(leftList);
 			lgtvXml.writeXml(Paths.get("tmpSaveLeft.xml"));
 			System.out.println("Saved: leftList().size=" + leftList.size());
 			
-			//leftList.stream().forEach(System.out::println);
-			lgtvXml.removeAllItemTags();
+			lgtvXml.removeAllItemTagsAsNodes();
 			lgtvXml.newAddChannels2(rightList);
 			lgtvXml.writeXml(Paths.get("tmpSaveRight.xml"));
 			System.out.println("Saved: rightList().size=" + rightList.size());
 			
-			//rightList.stream().forEach(System.out::println);
 			System.out.println("Saved (shoulld be...");
 		}
 
@@ -121,21 +114,17 @@ public class App {
 		public void load(ActionEvent e) {
 			final Path pathLeft = Paths.get("tmpSaveLeft.xml");
 			final Path pathRight = Paths.get("tmpSaveRight.xml");
-			// TODO Auto-generated method stub
+
 			System.out.println("load received");
-			Path path = Paths.get("output.xml");
+//			Path path = Paths.get("output.xml");
 			
 			leftList.clear();
 			rightList.clear();
 			
 			try {
-//				LGTVXml.fromFile(pathLeft).readItemTagsAsImmutableItem().forEach(x -> leftList.add(x));
 				LGTVXml.fromFile(pathLeft).readItemTagsAsMutableItem().forEach(x -> leftList.add(x));
-//				LGTVXml.fromFile(pathRight).readItemTagsAsImmutableItem().forEach(x -> rightList.add(x));
 				LGTVXml.fromFile(pathRight).readItemTagsAsMutableItem().forEach(x -> rightList.add(x));
-				//rightList = LGTVXml.fromFile(pathRight).readItemTags2();
 			} catch (ParserConfigurationException | SAXException | IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			
@@ -144,21 +133,18 @@ public class App {
 
 		@Override
 		public void redo(ActionEvent e) {
-			// TODO Auto-generated method stub
 			System.out.println("redo received");
 		}
 
 		@Override
 		public void newFromFile(ActionEvent e) {
 			final Path path = Paths.get("GlobalClone00001.xml"); 
-			// TODO Auto-generated method stub
 			
 			leftList.clear();
 			rightList.clear();
 			
 			System.out.println("PATH TO THE FILE HAS TO BE ADDED HERE. " + path);
 			try {
-//				LGTVXml.fromFile(path).readItemTagsAsImmutableItem().forEach(x -> leftList.add(x));
 				LGTVXml.fromFile(path).readItemTagsAsMutableItem().forEach(x -> leftList.add(x));
 			} catch (ParserConfigurationException | SAXException | IOException e1) {
 				// TODO Auto-generated catch block
@@ -169,19 +155,12 @@ public class App {
 		}
 	};
 	
-/*	public static void mockMove(FrameHandler frameHandler, ActionEvent e, List<Item> leftList) {
-		// Mock move
-		frameHandler.moveRight(e, Arrays.asList( leftList.get(10), leftList.get(11), leftList.get(12) )); 
-	}*/
-	
 	public App() throws SAXException, IOException, ParserConfigurationException {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db = dbf.newDocumentBuilder();
 		Document doc = db.parse(new File("GlobalClone00001.xml"));
 		lgtvXml = new LGTVXml(doc); 
 		
-//		List<ImmutableItemTag> deserializedList = lgtvXml.readItemTags();
-//		List<Item> deserializedList = lgtvXml.readItemTagsAsImmutableItem();
 		List<Item> deserializedList = lgtvXml.readItemTagsAsMutableItem();
 		leftList.addAll(deserializedList);
 		
@@ -231,7 +210,8 @@ public class App {
 		System.out.println("Recognized 'histData' argument. Not running GUI.");
 		
 		LGTVXml lgtvXml = LGTVXml.fromFile(Paths.get("GlobalClone00001.xml"));
-		List<Item> channels = lgtvXml.readItemTagsAsImmutableItem();
+		//List<Item> channels = lgtvXml.readItemTagsAsImmutableItem();
+		List<Item> channels = lgtvXml.readItemTagsAsMutableItem();
 				
 		//listOfMaps.stream().flatMap(x -> x.entrySet().stream()).peek( x -> System.out.println(x.getKey())).forEach( x -> {} );
 		Map<String, Map<String, Long>> frequencies = channels.stream()
@@ -248,32 +228,7 @@ public class App {
 				System.out.format("  " + k + ": %s ... %n", 
 						v.entrySet().stream().limit(5).collect(Collectors.toMap(Entry::getKey,  Entry::getValue))); }
 			});
-
-// TODO: HERE: COME UP WITH FILTERS.
-		
-		// Here -> need to apply some filters.
-		
-		//System.out.println(o);
-		  
-/*()		//Desired:
-		Map<String, Map<String, Integer>> result = new HashMap<>();
-		  Map<String, Integer> colors = new HashMap<>();
-		    colors.put("red", 2);
-		    colors.put("blue", 1);
-		  result.put("color", colors) ; // red:2, blue:1
-		  
-		  Map<String, Integer> sizes = new HashMap<>();
-		    sizes.put("small", 3);
-		  result.put("size", sizes);
-		    
-		  Map<String, Integer> volumes = new HashMap<>();
-		    volumes.put("low", 1);
-		    volumes.put("medium", 1);
-		    volumes.put("high", 1);
-		  result.put("volume", volumes);
-		  
-		  System.out.println("result" + result);*/
-}
+	}
 	
 	public static void main(String[] args) throws SAXException, IOException, ParserConfigurationException {
 		// TODO: Remove the messing conditional:

@@ -1,21 +1,15 @@
 package com.kaczurba.lgtvchannels.gui;
 
-import java.awt.Dimension;
-
 import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.ListSelectionModel;
-import javax.swing.ScrollPaneConstants;
-
-import com.kaczurba.lgtvchannels.xmls.Item;
 
 public class SideButtonsPanel extends JPanel {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4279164373158453016L;
 	private final JButton btnLoad = new JButton("Load WIP");	
 	private final JButton btnNewFromFile = new JButton("New from file...");
 	private final JButton btnSave = new JButton("Save WIP");

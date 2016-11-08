@@ -1,7 +1,6 @@
 package com.kaczurba.lgtvchannels.gui.inputfilters;
 
 import org.junit.*;
-import org.junit.Assert.*;
 import java.util.LinkedHashSet;
 
 public class DataModelTest {

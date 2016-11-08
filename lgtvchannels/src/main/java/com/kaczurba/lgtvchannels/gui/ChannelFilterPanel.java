@@ -22,13 +22,19 @@ import com.kaczurba.lgtvchannels.gui.inputfilters.JInputCombo;
 import com.kaczurba.lgtvchannels.gui.inputfilters.JPopupScrolledJList;
 import com.kaczurba.lgtvchannels.xmls.Item;
 
+// TODO: Should ChannelFilterPanel be not refactored? <E> and replace <Item> ?
 public class ChannelFilterPanel extends JPanel {
 
-	private final JPopupScrolledJList<Item> jList = new JPopupScrolledJList();
-	private JInputCombo inputCombo;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8529438975358786663L;
+	private final JPopupScrolledJList<Item> jList = new JPopupScrolledJList<>();
+//	private JInputCombo<Item> inputCombo;
+	private JInputCombo<String> inputCombo;
 	private DataModel<String> dataModel;
 	private JScrollPane leftPaneListScroller = new JScrollPane();
-	private DefaultListModel<Item> leftListModel = new DefaultListModel();
+	private DefaultListModel<Item> leftListModel = new DefaultListModel<>();
     private JTextArea txtrChannelDetails = new JTextArea();
 	private JScrollPane txtrChannelDetailsScrollPane = new JScrollPane();
 	private JLabel lblChannelDetails = new JLabel("Channel details:");
@@ -120,19 +126,19 @@ public class ChannelFilterPanel extends JPanel {
 	    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 	}
 	
-	public void setDataModel(DataModel dataModel) {
+	public void setDataModel(DataModel<String> dataModel) {
 		if (this.dataModel != null)
 			throw new IllegalStateException("DataModel has been already set.");
 		
 		this.dataModel = dataModel;
 		
-		inputCombo = new JInputCombo(dataModel);
+		inputCombo = new JInputCombo<String>(dataModel);
 		
 		add(inputCombo);
 		// ---------------- END OF: Setting it up. -----------------
 	}
 	
-	public JInputCombo getInputCombo() {
+	public JInputCombo<String> getInputCombo() {
 		return this.inputCombo;
 	}
 	

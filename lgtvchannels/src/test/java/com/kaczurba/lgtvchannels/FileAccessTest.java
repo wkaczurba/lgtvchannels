@@ -4,8 +4,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
-//import static org.junit.Assert.*;
-import org.junit.runner.Runner;
 import org.junit.runner.notification.Failure;
 
 import java.net.URISyntaxException;

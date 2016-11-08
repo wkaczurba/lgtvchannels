@@ -1,20 +1,13 @@
 package com.kaczurba.lgtvchannels.gui.inputfilters;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import java.awt.GridBagLayout;
-import javax.swing.JTextField;
 import java.awt.GridBagConstraints;
 import javax.swing.JLabel;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -27,13 +20,18 @@ import javax.swing.JComboBox;
 
 public class JComboBoxes<E> extends JPanel implements DataModelObserver<E> {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4431616448404634960L;
+
 	private final ActionListener dispatchingActionListner = (e) -> this.dispatchEvent(e);
 	
 	// for debugging
 	private final ActionListener loopbackActionListener = (e) -> {
 		Object obj = e.getSource();
 		if (obj instanceof JComboBox) {
-			JComboBox combo = (JComboBox) obj;
+			JComboBox<?> combo = (JComboBox<?>) obj;
 			
 			//System.out.println(name + " has changed to: " + comboBox.getSelectedItem());
 			System.out.println("loopbackActionListener: " + combo.getName() + " has changed to: " + combo.getSelectedIndex());
@@ -63,7 +61,7 @@ public class JComboBoxes<E> extends JPanel implements DataModelObserver<E> {
 		setLayout(gridBagLayout);
 	}
 	
-	final HashMap<String, JComboBox> comboBoxes = new HashMap<>();
+	final HashMap<String, JComboBox<E>> comboBoxes = new HashMap<>();
 	
 	public String getSelection(String label) {
 		return (String) comboBoxes.get(label).getSelectedItem();
@@ -88,7 +86,7 @@ public class JComboBoxes<E> extends JPanel implements DataModelObserver<E> {
 		comboBoxes.clear();
 	}
 		
-	private DataModel<E> dataModel;
+//?	private DataModel<E> dataModel;
 	
 	// TODO: dataModel should be observable and JComboBoxes should keep checking if a change is made.  
 	public void setDataModel(DataModel<E> dataModel) {
@@ -99,7 +97,7 @@ public class JComboBoxes<E> extends JPanel implements DataModelObserver<E> {
 			removeAllComboBoxes();
 		}
 		
-		this.dataModel = dataModel;
+//?		this.dataModel = dataModel;
 		dataModel.addDataModelObserver(this);
 		
 		Set<Entry<String, LinkedHashSet<E>>> entries = dataModel.entrySet();

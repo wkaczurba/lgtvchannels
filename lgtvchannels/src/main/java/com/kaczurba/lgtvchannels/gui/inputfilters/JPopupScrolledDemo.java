@@ -1,23 +1,11 @@
 package com.kaczurba.lgtvchannels.gui.inputfilters;
 
 import java.awt.EventQueue;
-import java.awt.Rectangle;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.function.BiConsumer;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import javax.swing.JList;
@@ -27,6 +15,11 @@ import javax.swing.JMenuItem;
 
 public class JPopupScrolledDemo<E> extends JList<E> {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4613335388271078506L;
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {

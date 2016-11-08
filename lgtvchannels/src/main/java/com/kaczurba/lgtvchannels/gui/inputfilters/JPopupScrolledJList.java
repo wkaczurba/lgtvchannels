@@ -1,6 +1,5 @@
 package com.kaczurba.lgtvchannels.gui.inputfilters;
 
-import java.awt.EventQueue;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -10,14 +9,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
-import javax.swing.DefaultListModel;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
-import javax.swing.border.EmptyBorder;
-
 import javax.swing.JList;
 import javax.swing.JMenuItem;
 
@@ -28,6 +21,10 @@ public class JPopupScrolledJList<E> extends JList<E> {
 //	private final JScrollPane scrollPane;
 	// ? MouseAdapter mouseAdapter;
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6903047985042483827L;
 	/**
 	 * Create the panel.
 	 */

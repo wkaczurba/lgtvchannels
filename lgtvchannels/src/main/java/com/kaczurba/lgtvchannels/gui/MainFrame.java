@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.util.*;
 import java.util.Map.Entry;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -14,11 +13,6 @@ import java.util.stream.Stream;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
 import com.kaczurba.lgtvchannels.gui.inputfilters.JPopupScrolledJList;
 import com.kaczurba.lgtvchannels.xmls.Item;
 
@@ -46,6 +40,11 @@ import javax.swing.border.BevelBorder;
 //  - add setting properties?
 //  - add icons / highlights for stuff that is missing.
 public class MainFrame extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9010698440489811779L;
+
 	FrameHandler frameHandler = null;
 
     private final JPanel top = new JPanel();

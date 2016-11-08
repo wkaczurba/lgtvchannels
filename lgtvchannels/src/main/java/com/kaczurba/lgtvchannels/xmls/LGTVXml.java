@@ -1,6 +1,5 @@
 package com.kaczurba.lgtvchannels.xmls;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
@@ -8,10 +7,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -44,11 +39,11 @@ public class LGTVXml {
 		return new LGTVXml(doc);
 	}
 	
-	public void addChannels(final Node channelsNode, List<ImmutableItemTag> immutableItemTags) {
+	public void addChannels(final Node channelsNode, List<? extends Item> items) {
 		//Document doc = channelsNode.getOwnerDocument();
 		
-		for (ImmutableItemTag immutableTag : immutableItemTags) {
-			Map<String, String> map = immutableTag.getAsMap();
+		for (Item item : items) {
+			Map<String, String> map = item.getAsMap();
 			
 			Element el = doc.createElement("ITEM");
 				channelsNode.appendChild(doc.createTextNode("\n"));
@@ -65,10 +60,10 @@ public class LGTVXml {
 	}
 	
 	public Node getTopNode(Document doc) {
-		List<Node> nodes = XMLElementsView.getChildElementNodesWithName(doc.getFirstChild(), "CHANNEL");
-				
+		
 		Node n = XMLElementsView.getFirstChildElementNodeWithName(doc.getFirstChild(), "CHANNEL");
 		final Node topNode = XMLElementsView.getFirstChildElementNodeWithName(n, "DTV");
+		
 		return topNode;
 	}
 	
@@ -113,8 +108,22 @@ public class LGTVXml {
 	
 		}
 		channelsNode.appendChild(doc.createTextNode("\n"));			
-	}	
+	}
 	
+	/*public Item itemFactory(Class<? extends Item> clazz, Item item) {
+		
+		if (clazz==ImmutableItemTag.class) {
+			return new ImmutableItemTag(item);
+		} else if (clazz == MutableItemTag.class) {
+			return new MutableItemTag(item);
+		} else {
+			throw new RuntimeException(new ClassNotFoundException("" + clazz.getName())); 
+		}
+		
+		// ZZZ!!!???
+	}*/
+
+	/*
 	public List<Item> readItemTagsAsImmutableItem() {		
 		List<Item> immutableItemTags = new ArrayList<Item>();
 		List<Node> nodes = XMLElementsView.getChildElementNodesWithName(doc.getFirstChild(), "CHANNEL");
@@ -126,11 +135,11 @@ public class LGTVXml {
 
 		nodes.stream()
 			.map(node -> new XMLMappedItemTag(node))
-			.map(itemTag -> (new ImmutableItemTag.Builder(itemTag).build()))
+			.map(itemTag -> itemFactory(ImmutableItemTag.class, itemTag))
 			.forEach(immutableItemTag -> immutableItemTags.add(immutableItemTag));
 				
 		return immutableItemTags;					
-	}
+	}*/
 	
 	public List<Item> readItemTagsAsMutableItem() {		
 		List<Item> mutableItemTags = new ArrayList<Item>();
@@ -149,63 +158,65 @@ public class LGTVXml {
 		return mutableItemTags;					
 	}	
 
-	public void removeAllItemTags() {		
-		List<Node> nodes = XMLElementsView.getChildElementNodesWithName(doc.getFirstChild(), "CHANNEL");
-		Node n = XMLElementsView.getFirstChildElementNodeWithName(doc.getFirstChild(), "CHANNEL");
-		n = XMLElementsView.getFirstChildElementNodeWithName(n, "DTV");
+	public List<Node> removeAllItemTagsAsNodes() {
+		// TODO: Consider using XPath or something similar.
+		// Getting: TLLDATA/CHANNEL/DTV/*
+//		List<Node> nodes = XMLElementsView.getChildElementNodesWithName(doc.getFirstChild(), "CHANNEL");
+		Node channelNode = XMLElementsView.getFirstChildElementNodeWithName(doc.getFirstChild(), "CHANNEL");
+		Node dtvNode = XMLElementsView.getFirstChildElementNodeWithName(channelNode, "DTV");
 			
-		nodes = XMLElementsView.getChildElementNodes(n);
-		System.out.println("nodes: " + nodes );
+/*		nodes = XMLElementsView.getChildElementNodes(n);
+		System.out.println("nodes: " + nodes );*/
 			
-		List<ImmutableItemTag> immutableItemTags = new ArrayList<ImmutableItemTag>();
+		//List<ImmutableItemTag> immutableItemTags = new ArrayList<ImmutableItemTag>();
+/*		List<Item> immutableItemTags = new ArrayList<>();
 			
 		nodes.stream()
 			.map(node -> new XMLMappedItemTag(node))
 			.map(itemTag -> (new ImmutableItemTag.Builder(itemTag).build()))
-			.forEach(immutableItemTag -> immutableItemTags.add(immutableItemTag));
-			
-		final Node topNode = n;
+			.forEach(immutableItemTag -> immutableItemTags.add(immutableItemTag));*/
+//		final Node dtvNode = n;
 		final List<Node> removedNodes = new ArrayList<>();
 			
-		XMLNode.getChildNodes(topNode).stream().forEach( child -> removedNodes.add( topNode.removeChild(child) ) );
-			
-			//nodeAnalysis(removedNodes.get(0));
+		XMLNode.getChildNodes(dtvNode).stream().forEach( child -> removedNodes.add( dtvNode.removeChild(child) ) );
+		return removedNodes;
 	}
 
-	public Document readAndRemoveItemTags() {		
-		Predicate<Node> elementsOnly = node -> (NodeType.fromInteger(node.getNodeType()) == NodeType.ELEMENT_NODE && (node.getNodeValue() == null) ); 
-		List<Node> nodes = XMLElementsView.getChildElementNodesWithName(doc.getFirstChild(), "CHANNEL");
-		//System.out.println(nodes);
+/*
+	public Document readAndRemoveItemTags() {
+		Node channelNode = XMLElementsView.getFirstChildElementNodeWithName(doc.getFirstChild(), "CHANNEL");
+		Node dtvNode = XMLElementsView.getFirstChildElementNodeWithName(channelNode, "DTV");
 			
-		Node n = XMLElementsView.getFirstChildElementNodeWithName(doc.getFirstChild(), "CHANNEL");
-		n = XMLElementsView.getFirstChildElementNodeWithName(n, "DTV");
+//DBG:	System.out.println("Children of " + XMLElementsView.getPathAsString(dtvNode) + ":");
+		List<Node> items = XMLElementsView.getChildElementNodes(dtvNode);
+//DBG:	System.out.println("items: " + items );
+		
+		List<ImmutableItemTag> immutableItemTags = new ArrayList<>();
 			
-		System.out.println("Children of " + XMLElementsView.getPathAsString(n) + ":");
-		nodes = XMLElementsView.getChildElementNodes(n);
-		System.out.println("nodes: " + nodes );
+		XMLMappedItemTag it = new XMLMappedItemTag(items.get(0));
+//DBG:  it.getAsMap().forEach((k,v) -> System.out.println(k+":"+v) );
+//DBG:  System.out.println("\nit2: ");
 			
-		List<ImmutableItemTag> immutableItemTags = new ArrayList<ImmutableItemTag>();
-			
-		XMLMappedItemTag it = new XMLMappedItemTag(nodes.get(0));
-		it.getAsMap().forEach((k,v) -> System.out.println(k+":"+v) );
-		System.out.println("\nit2: ");
-			
-		nodes.stream()
+		items.stream()
 			.map(node -> new XMLMappedItemTag(node))
 			.map(itemTag -> (new ImmutableItemTag.Builder(itemTag).build()))
 			.forEach(immutableItemTag -> immutableItemTags.add(immutableItemTag));
 			
 		// REMOVING ALL NODES:
-		final Node topNode = n;				
-		final List<Node> removedNodes = new ArrayList<>();
-			
-		XMLNode.getChildNodes(topNode).stream().forEach( child -> removedNodes.add( topNode.removeChild(child) ) );
+//		final Node topNode = dtvNode;
+		
+//		final List<Node> removedNodes = new ArrayList<>();
+//		XMLNode.getChildNodes(dtvNode).stream().forEach( child -> removedNodes.add( dtvNode.removeChild(child) ) );
+		
+		XMLNode.getChildNodes(dtvNode).stream().forEach( child -> dtvNode.removeChild(child) );
+		
 			
 //		nodeAnalysis(removedNodes.get(0));
-		addChannels(topNode, immutableItemTags);
+		addChannels(dtvNode, immutableItemTags);
 			
 		return doc;
 	}		
+*/	
 	
 	//
 	public void writeXml(Path fileOutputPath) {

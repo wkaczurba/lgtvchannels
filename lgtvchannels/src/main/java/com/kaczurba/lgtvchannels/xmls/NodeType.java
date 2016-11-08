@@ -1,7 +1,5 @@
 package com.kaczurba.lgtvchannels.xmls;
 
-import java.util.Arrays;
-
 import org.w3c.dom.Node;
 
 //import javax.xml.soap.Node;

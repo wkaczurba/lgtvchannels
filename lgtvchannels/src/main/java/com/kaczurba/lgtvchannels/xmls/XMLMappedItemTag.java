@@ -2,13 +2,16 @@ package com.kaczurba.lgtvchannels.xmls;
 
 import java.io.Serializable;
 import java.util.*;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.w3c.dom.Node;
 
 public class XMLMappedItemTag implements Item, Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7926597462273919255L;
 	private final transient Node node;
 	
 	private void sanitize() {

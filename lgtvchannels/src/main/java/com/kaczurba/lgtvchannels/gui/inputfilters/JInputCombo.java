@@ -1,30 +1,23 @@
 package com.kaczurba.lgtvchannels.gui.inputfilters;
 
 import javax.swing.JPanel;
-import javax.swing.JSplitPane;
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
-
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Map;
 
 import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-public class JInputCombo extends JPanel implements ActionListener, DocumentListener {
+public class JInputCombo<E> extends JPanel implements ActionListener, DocumentListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2702506654407905492L;
 	private JTextField textField;
-	private JComboBoxes comboBoxes;
+	private JComboBoxes<E> comboBoxes;
 	private ActionListener actionListener;
 	
 	/**
@@ -47,10 +40,10 @@ public class JInputCombo extends JPanel implements ActionListener, DocumentListe
 		/*JComboBoxes filters = new JComboBoxes();
 		panel.add(filters);
 		add(panel);*/
-		setComboBoxes(new JComboBoxes());
+		setComboBoxes(new JComboBoxes<E>());
 	}
 	
-	public JInputCombo(DataModel dataModel) {
+	public JInputCombo(DataModel<E> dataModel) {
 		this();
 		getComboBoxes().setDataModel(dataModel);
 	}
@@ -84,7 +77,7 @@ public class JInputCombo extends JPanel implements ActionListener, DocumentListe
 			actionListener.actionPerformed(e);
 	}
 	
-	private void setComboBoxes(JComboBoxes comboBoxes) {
+	private void setComboBoxes(JComboBoxes<E> comboBoxes) {
 		if (this.comboBoxes != null)
 			remove(this.comboBoxes);
 		
@@ -93,7 +86,7 @@ public class JInputCombo extends JPanel implements ActionListener, DocumentListe
 		comboBoxes.setActionListener(this);
 	}
 
-	private JComboBoxes getComboBoxes() {
+	private JComboBoxes<E> getComboBoxes() {
 		return comboBoxes;
 	}
 
@@ -104,7 +97,7 @@ public class JInputCombo extends JPanel implements ActionListener, DocumentListe
 		Object obj = e.getSource();
 		
 		if (obj instanceof JComboBox) {
-			JComboBox combo = (JComboBox) obj;
+			JComboBox<?> combo = (JComboBox<?>) obj;
 			
 			//System.out.println("InputCombo: " + combo.getName() + " has changed to: " + combo.getSelectedItem());
 			this.dispatchEvent(new ActionEvent(this, 3, combo.getName()));

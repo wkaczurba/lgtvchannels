@@ -3,16 +3,17 @@ package com.kaczurba.lgtvchannels.gui.inputfilters;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashSet;
-import java.util.List;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 public class JInputComboDemo extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7827568466193954197L;
 	private JPanel contentPane;
 
 	/**
@@ -48,7 +49,7 @@ public class JInputComboDemo extends JFrame {
 		dataModel.add("isDeleted", new LinkedHashSet<String>( Arrays.asList("all", "0", "1")));
 		dataModel.add("isBlocked", new LinkedHashSet<String>( Arrays.asList("all", "0", "1")));
 		
-		JInputCombo inputCombo = new JInputCombo(dataModel);
+		JInputCombo<String> inputCombo = new JInputCombo<>(dataModel);
 		
 		inputCombo.setActionListener( (e) -> {
 			if (e.getSource() == inputCombo) {

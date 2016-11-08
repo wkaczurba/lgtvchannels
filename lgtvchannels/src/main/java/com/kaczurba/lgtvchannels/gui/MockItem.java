@@ -12,7 +12,7 @@ public class MockItem implements Item{
 
 	@Override
 	public Set<String> getKeys() {
-		return new HashSet(Arrays.asList("prNum", "vchName"));
+		return new HashSet<>(Arrays.asList("prNum", "vchName"));
 	}
 
 	@Override

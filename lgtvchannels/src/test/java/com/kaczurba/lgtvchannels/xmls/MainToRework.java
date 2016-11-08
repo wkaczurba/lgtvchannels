@@ -9,20 +9,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.lang.reflect.TypeVariable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -36,18 +30,16 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
 
 import com.kaczurba.lgtvchannels.xmls.ImmutableItemTag;
-import com.kaczurba.lgtvchannels.xmls.NodeType;
 import com.kaczurba.lgtvchannels.xmls.XMLElementsView;
 import com.kaczurba.lgtvchannels.xmls.XMLMappedItemTag;
 import com.kaczurba.lgtvchannels.xmls.XMLNode;
 
+@SuppressWarnings("deprecation")
 public class MainToRework {
 	
 	
@@ -86,7 +78,7 @@ public class MainToRework {
 		Set<String> tags = channels.stream().map(i -> i.getKeys().stream()).flatMap(i -> i).collect(Collectors.toSet());
 		List<String> expectedTagsList = Arrays.asList("prNum","minorNum","original_network_id","transport_id","network_id","service_id","physicalNum","sourceIndex","serviceType","special_data","frequency","nitVersion","mapType","mapAttr","isInvisable","isBlocked","isSkipped","isNumUnSel","isDeleted","chNameByte","isDisabled","hexVchName","notConvertedLengthOfVchName","vchName","lengthOfVchName","hSettingIDHandle","usSatelliteHandle","isUserSelCHNo","logoIndex","videoStreamType");
 	
-		Set<String> knownTags = new HashSet(expectedTagsList);
+		Set<String> knownTags = new HashSet<>(expectedTagsList);
 		if (!knownTags.equals(tags)) {
 			throw new IllegalStateException("Tags are different than expected.");
 		}
@@ -112,7 +104,6 @@ public class MainToRework {
 		DocumentBuilder db = dbf.newDocumentBuilder();
 		Document doc = db.parse(new File(fileName));
 
-		Predicate<Node> elementsOnly = node -> (NodeType.fromInteger(node.getNodeType()) == NodeType.ELEMENT_NODE && (node.getNodeValue() == null) ); 
 		List<Node> nodes = XMLElementsView.getChildElementNodesWithName(doc.getFirstChild(), "CHANNEL");
 		//System.out.println(nodes);
 		
@@ -145,7 +136,7 @@ public class MainToRework {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked" })
 	public static List<ImmutableItemTag> deserializeItemsTagsFromFile(Path path) {
 		try (InputStream is = Files.newInputStream(path);
 			 ObjectInputStream ois = new ObjectInputStream(is)) {

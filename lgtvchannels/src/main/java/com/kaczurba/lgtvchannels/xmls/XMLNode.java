@@ -23,7 +23,6 @@ public class XMLNode {
 	}
 	
 	public static int getDepth(Node node, Predicate<Node> predicate) {
-		int value;
 		OptionalInt optionalInt = getChildNodes(node).stream().filter(predicate).mapToInt(n -> getDepth(n)).max();
 
 		if (!optionalInt.isPresent())
@@ -46,9 +45,6 @@ public class XMLNode {
 	}
 	
 	public static List<Node> getChildNodes(Node node, Predicate<Node> predicate) {
-		List<Node> matchingNodes = new ArrayList<Node>(); 
-		NodeType nodeType = NodeType.fromInteger( node.getNodeType() );
-		
 		return XMLNode.getChildNodes(node).stream().filter(predicate).collect(Collectors.toList());
 	}
 		

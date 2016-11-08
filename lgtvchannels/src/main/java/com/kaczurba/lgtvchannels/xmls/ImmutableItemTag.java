@@ -6,6 +6,10 @@ import java.util.stream.Collectors;
 
 @Deprecated
 public final class ImmutableItemTag implements Item, Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2262386998721654578L;
 	final private Map<String, String> map;
 	
 	public ImmutableItemTag(Map<String, String> map) {
@@ -13,6 +17,10 @@ public final class ImmutableItemTag implements Item, Serializable {
 		//this.map = Collections.unmodifiableMap( new HashMap<>(map) );
 		this.map = new LinkedHashMap<>(map);
 		//throw new IllegalStateException("ImmutableItemTags should not be used.");
+	}
+	
+	public ImmutableItemTag(Item item) {
+		this(item.getAsMap());
 	}
 
 	@Override

@@ -12,10 +12,12 @@ import org.xml.sax.SAXException;
 import com.kaczurba.lgtvchannels.xmls.ImmutableItemTag;
 import com.kaczurba.lgtvchannels.xmls.XMLMappedItemTag;
 
+@SuppressWarnings("deprecation")
 public class MainSerializeAndSaveToRework {
 	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
 		//Main main = new Main();
 		List<XMLMappedItemTag> itemTags = MainToRework.readItemTags("GlobalClone00001.xml");
+		
 		List<ImmutableItemTag> immutableItemTags = 
 				itemTags.stream().limit(400)
 					.map(x -> (new ImmutableItemTag.Builder(x)).build())

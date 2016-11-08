@@ -4,13 +4,14 @@ import java.awt.Component;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import com.kaczurba.lgtvchannels.xmls.Item;
-
 public class MiddlePanel extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7893722270746787052L;
 	private final JButton btnUndo = new JButton("Undo");
 	private final JButton btnRedo = new JButton("Redo");
 	private final JButton btnMoveRight = new JButton("Move >");
