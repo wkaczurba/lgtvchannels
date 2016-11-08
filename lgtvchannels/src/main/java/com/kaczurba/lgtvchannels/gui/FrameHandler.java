@@ -1,6 +1,7 @@
 package com.kaczurba.lgtvchannels.gui;
 
 import java.awt.event.ActionEvent;
+import java.nio.file.Path;
 import java.util.List;
 
 import com.kaczurba.lgtvchannels.xmls.Item;
@@ -14,6 +15,8 @@ public interface FrameHandler {
 	void moveUp(ActionEvent e, List<Item> what);
 	void moveDown(ActionEvent e, List<Item> what);
 	void undo(ActionEvent e);
+	void open(ActionEvent e);
+	void export(ActionEvent a);
 	void saveWIP(ActionEvent e);
 	void load(ActionEvent e);
 	void redo(ActionEvent e);
