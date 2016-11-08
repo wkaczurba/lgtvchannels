@@ -4,14 +4,23 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
+
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -152,6 +161,60 @@ public class App {
 			}
 			
 			frame.refresh();
+		}
+
+		@Override
+		public void open(ActionEvent e) {
+			// TODO: This should be moved to GUI stuff..
+			//       GUI Factory or something should be used.
+			JFileChooser fc = new JFileChooser();
+			fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
+			int returnVal = fc.showOpenDialog(null);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                Path path = fc.getSelectedFile().toPath();
+    			try {
+    				//LGTVXml.fromFile(path).readItemTagsAsMutableItem().forEach(x -> leftList.add(x));
+    				List<Item> items = LGTVXml.fromFile(path).readItemTagsAsMutableItem();
+        			leftList.clear();
+        			rightList.clear();
+        			leftList.addAll(items);
+        			frame.refresh();                    				
+    			} catch (ParserConfigurationException | SAXException | IOException e1) {
+    				// TODO Auto-generated catch block
+    				e1.printStackTrace();
+    				return;
+    			}          
+            } else {
+                // Open command cancelled
+                return;
+            }
+		}
+
+		@Override
+		public void export(ActionEvent a) {
+			// TODO: This GUI should not be part of the App class.
+			//       It should be moved to GUI Factory or something.
+			JFileChooser fc = new JFileChooser();
+			fc.setDialogType(JFileChooser.SAVE_DIALOG);
+			fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
+			
+			int returnVal = fc.showOpenDialog(null);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                Path path = fc.getSelectedFile().toPath();
+                if (Files.exists(path)) {
+                	int result = JOptionPane.showConfirmDialog( fc, 
+                			"The file exists, overwrite?", "Existing file", JOptionPane.YES_NO_CANCEL_OPTION);
+                	
+                	if (result != JOptionPane.YES_OPTION)
+                		return;
+                }                	
+                	
+    			lgtvXml.removeAllItemTagsAsNodes();
+    			lgtvXml.newAddChannels2(rightList);
+    			lgtvXml.writeXml(path);
+    			System.out.format("Saved to %s rightList().size=%d", path, rightList.size());
+                	
+            }
 		}
 	};
 	
