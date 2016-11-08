@@ -1,6 +1,6 @@
 # lgtvchannels
 
-Simple editor to edit channels in LG TV that allows reordering of channels. I wrote it as after connecting my TV to Satellite it has found 1700 channels. Most of them useless. The code was written for (LG TV 43UF680V-ZA).
+Simple editor to edit channels in LG TV that allows reordering of channels. It was written for my TV (LG TV 43UF680V-ZA) but I believe it can be ported to handle other LGTVs.
 
 The editor is a Java-written tool. If you feel you want to join to have some fun with code - feel free to pull the repo and write tests :). Or other stuff.
 
