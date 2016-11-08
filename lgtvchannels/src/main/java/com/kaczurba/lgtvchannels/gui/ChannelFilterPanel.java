@@ -21,6 +21,7 @@ import com.kaczurba.lgtvchannels.gui.inputfilters.DataModel;
 import com.kaczurba.lgtvchannels.gui.inputfilters.JInputCombo;
 import com.kaczurba.lgtvchannels.gui.inputfilters.JPopupScrolledJList;
 import com.kaczurba.lgtvchannels.xmls.Item;
+import java.awt.Component;
 
 // TODO: Should ChannelFilterPanel be not refactored? <E> and replace <Item> ?
 public class ChannelFilterPanel extends JPanel {
@@ -29,6 +30,8 @@ public class ChannelFilterPanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 8529438975358786663L;
+	
+	private JLabel topLabel = null;
 	private final JPopupScrolledJList<Item> jList = new JPopupScrolledJList<>();
 //	private JInputCombo<Item> inputCombo;
 	private JInputCombo<String> inputCombo;
@@ -39,6 +42,14 @@ public class ChannelFilterPanel extends JPanel {
 	private JScrollPane txtrChannelDetailsScrollPane = new JScrollPane();
 	private JLabel lblChannelDetails = new JLabel("Channel details:");
 	private final JLabel lblStatus = new JLabel("Status:");
+	
+	public ChannelFilterPanel(String topLabelText, Font font) {
+		this();
+		JLabel topLabel = new JLabel(topLabelText);
+		topLabel.setFont(font);
+		setTopLabel(topLabel);
+		//topLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+	}
 	
 	public ChannelFilterPanel() {
 		// Left-Panel's stuff:
@@ -64,6 +75,7 @@ public class ChannelFilterPanel extends JPanel {
 				System.out.println("         3. combos: " + inputCombo.getComboBoxesValues());
 			}
 		});		
+		leftPaneListScroller.setAlignmentX(Component.LEFT_ALIGNMENT);
 		// ****************** End of the example.
 				
 
@@ -100,6 +112,7 @@ public class ChannelFilterPanel extends JPanel {
 
 		add(lblChannelDetails);
 		txtrChannelDetails.setRows(10);
+		txtrChannelDetailsScrollPane.setAlignmentX(Component.LEFT_ALIGNMENT);
 
 		txtrChannelDetailsScrollPane.setViewportView(txtrChannelDetails);
 		add(txtrChannelDetailsScrollPane);
@@ -124,6 +137,18 @@ public class ChannelFilterPanel extends JPanel {
 	    jList.addPopupJItem("Properties", rightPopupClickAction);				
 		// ---------------------------------------------------------------
 	    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+	}
+	
+	public void setTopLabel(JLabel label) {
+		if (topLabel != null)
+			remove(topLabel);
+			
+		topLabel = label;
+		add(topLabel, 0);
+	}
+	
+	public JLabel getTopLabel() {
+		return topLabel;
 	}
 	
 	public void setDataModel(DataModel<String> dataModel) {
