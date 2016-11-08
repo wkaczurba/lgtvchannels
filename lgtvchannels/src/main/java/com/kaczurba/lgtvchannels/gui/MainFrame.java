@@ -21,6 +21,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 
 import javax.swing.border.BevelBorder;
+import java.awt.Font;
 
 
 // TODO:
@@ -158,12 +159,18 @@ public class MainFrame extends JFrame {
 		
 		contentPane.add(top);
 		
-		leftPanel = new ChannelFilterPanel();
+		leftPanel = new ChannelFilterPanel("From Input XML:", new Font("Tahoma", Font.BOLD, 16));
+// Label added:
+/*		JLabel leftLabel = new JLabel();
+		leftLabel.setFont();
+		leftPanel.add(leftLabel, 0);*/
 		
 		top.add(leftPanel);
 		middlePanel = new MiddlePanel();
 		top.add(middlePanel);				
-		rightPanel = new ChannelFilterPanel();
+		rightPanel = new ChannelFilterPanel("Output (result)", new Font("Tahoma", Font.BOLD, 16));
+		// Label added:
+		
 		top.add(rightPanel);
 		top.add(sideButtonsPanel);
 		
@@ -191,6 +198,8 @@ public class MainFrame extends JFrame {
 			//refreshRightPanel(e));
 			refreshChannelFilterPanel(rightPanel, getRightList(), e));
 
+		sideButtonsPanel.getBtnOpen().addActionListener(a -> frameHandler.open(a));
+		sideButtonsPanel.getBtnExport().addActionListener(a -> frameHandler.export(a));
 		sideButtonsPanel.getBtnLoad().addActionListener(a -> frameHandler.load(a));
 		sideButtonsPanel.getBtnSave().addActionListener(a -> frameHandler.saveWIP(a));
 		sideButtonsPanel.getBtnNewFromFile().addActionListener(a -> frameHandler.newFromFile(a));
