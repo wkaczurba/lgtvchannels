@@ -11,7 +11,9 @@ public class SideButtonsPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = -4279164373158453016L;
 	private final JButton btnLoad = new JButton("Load WIP");	
-	private final JButton btnNewFromFile = new JButton("New from file...");
+	private final JButton btnNewFromFile = new JButton("Open default.");
+	private final JButton btnOpen = new JButton("Open...");
+	private final JButton btnExport = new JButton("Export...");
 	private final JButton btnSave = new JButton("Save WIP");
 	private final JButton btnMoveUp = new JButton("Move up");
 	private final JButton btnMoveDown = new JButton("Move down");
@@ -32,6 +34,8 @@ public class SideButtonsPanel extends JPanel {
 		add(btnMoveUp);
 		add(btnMoveDown);
 		add(btnNewFromFile);
+		add(btnOpen);
+		add(btnExport);
 		add(btnSave);
 		add(btnLoad);
 		//add(lblStatus);
@@ -65,6 +69,15 @@ public class SideButtonsPanel extends JPanel {
 	public JButton getBtnNewFromFile() {
 		return btnNewFromFile;
 	}
+	
+	public JButton getBtnOpen() {
+		return btnOpen;
+	}
+	
+	public JButton getBtnExport() {
+		return btnExport;
+	}
+	
 	public JButton getBtnSave() {
 		return btnSave;
 	}
